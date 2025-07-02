@@ -140,6 +140,318 @@ public class DefaultAppLogStoreTests : GivenContext
 
     private static Request CreateRecord()
 /*
+FAILED TEST: The test run failed due to **C# syntax errors** in the file `DefaultAppLogStoreTests.cs`, preventing successful compilation. The main issues are:
+
+### Errors:
+1. **Missing semicolons (`;`)** at the end of statements (e.g., **Line 153**).
+2. **Invalid token `{`** in class member declarations (e.g., **Line 712**), indicating malformed or misplaced code blocks.
+3. **Incorrect syntax** in assignments or method declarations (e.g., **Line 713**).
+
+### Recommended Fixes:
+1. Add missing semicolons at the end of affected lines (e.g., **Line 153**).
+2. Correct the placement of braces `{}` and ensure valid method or class member declarations (e.g., **Lines 712–715**).
+3. Ensure all method bodies are properly enclosed and syntactically valid.
+
+    [Fact]
+    public async Task Should_write_max_number_of_records_to_stream()
+    {
+        var timeFrom = SystemClock.Instance.GetCurrentInstant();
+        var timeTo = timeFrom.Plus(Duration.FromDays(4));
+    
+        var records = new List<Request>();
+        for (int i = 0; i < 1000; i++)
+        {
+            records.Add(CreateRecord());
+        }
+    
+        A.CallTo(() => requestLogStore.QueryAllAsync(AppId.Id.ToString(), timeFrom, timeTo, CancellationToken.None))
+            .Returns(records.ToAsyncEnumerable());
+    
+        var stream = new MemoryStream();
+    
+        await sut.ReadLogAsync(AppId.Id, timeFrom, timeTo, stream, CancellationToken.None);
+        stream.Position = 0;
+    
+        var lines = 0;
+        using (var reader = new StreamReader(stream))
+        {
+            while (await reader.ReadLineAsync() != null)
+            {
+                lines++;
+            }
+        }
+    
+        Assert.Equal(1001, lines); // 1 header line + 1000 data lines
+    }
+    
+    private static Request CreateRecord()
+    {
+        return new Request { Properties = [] };
+    }
+
+*/
+/*
+FAILED TEST: The test run failed due to **C# syntax errors** in the file `DefaultAppLogStoreTests.cs`, specifically:
+
+### Errors:
+1. **Missing semicolons (`;`)** at the end of statements (e.g., **Line 155**).
+2. **Invalid token `{`** in class member declarations (e.g., **Line 663**), indicating malformed or misplaced code blocks.
+3. **Incorrect syntax** in assignments or method declarations (e.g., **Line 664**).
+
+### Recommended Fixes:
+1. Add missing semicolons at the end of affected lines (e.g., **Line 155**).
+2. Correct the placement of braces `{}` and ensure valid method or class member declarations (e.g., **Lines 663–666**).
+3. Ensure all method bodies are properly enclosed and syntactically valid.
+
+    [Fact]
+    public async Task Should_return_null_for_invalid_data_in_GetDouble_and_GetLong()
+    {
+        var timeFrom = SystemClock.Instance.GetCurrentInstant();
+        var timeTo = timeFrom.Plus(Duration.FromDays(4));
+    
+        var request = new Request
+        {
+            Properties = new Dictionary<string, string>
+            {
+                { DefaultAppLogStore.FieldRequestElapsedMs, "not a number" },
+                { DefaultAppLogStore.FieldCosts, "invalid" },
+                { DefaultAppLogStore.FieldBytes, "abc" },
+                { DefaultAppLogStore.FieldCacheHits, "xyz" },
+                { DefaultAppLogStore.FieldCacheTTL, "123.45" },
+                { DefaultAppLogStore.FieldStatusCode, "not a long" }
+            }
+        };
+    
+        A.CallTo(() => requestLogStore.QueryAllAsync(AppId.Id.ToString(), timeFrom, timeTo, CancellationToken.None))
+            .Returns(new[] { request }.ToAsyncEnumerable());
+    
+        var stream = new MemoryStream();
+    
+        await sut.ReadLogAsync(AppId.Id, timeFrom, timeTo, stream, CancellationToken.None);
+        stream.Position = 0;
+    
+        using (var reader = new StreamReader(stream))
+        {
+            var header = await reader.ReadLineAsync();
+            var dataLine = await reader.ReadLineAsync();
+    
+            Assert.NotNull(header);
+            Assert.NotNull(dataLine);
+        }
+    }
+
+*/
+/*
+FAILED TEST: The test run failed due to **C# syntax errors** in the file `DefaultAppLogStoreTests.cs`, specifically:
+
+### Errors:
+1. **Missing semicolons (`;`)** at the end of statements (e.g., **Line 157**).
+2. **Invalid token `{`** in class member declarations (e.g., **Line 614**), indicating malformed or misplaced code blocks.
+3. **Incorrect syntax** in assignments or method declarations (e.g., **Line 615**).
+
+### Recommended Fixes:
+1. Add missing semicolons at the end of affected lines (e.g., **Line 157**).
+2. Correct the placement of braces `{}` and ensure valid method or class member declarations (e.g., **Lines 614–617**).
+3. Ensure all method bodies are properly enclosed and syntactically valid.
+
+    [Fact]
+    public async Task Should_write_correct_number_of_records_to_stream()
+    {
+        var timeFrom = SystemClock.Instance.GetCurrentInstant();
+        var timeTo = timeFrom.Plus(Duration.FromDays(4));
+    
+        A.CallTo(() => requestLogStore.QueryAllAsync(AppId.Id.ToString(), timeFrom, timeTo, CancellationToken.None))
+            .Returns(Enumerable.Empty<Request>().ToAsyncEnumerable());
+    
+        var stream = new MemoryStream();
+    
+        await sut.ReadLogAsync(AppId.Id, timeFrom, timeTo, stream, CancellationToken.None);
+        stream.Position = 0;
+    
+        var lines = 0;
+        using (var reader = new StreamReader(stream))
+        {
+            while (await reader.ReadLineAsync() != null)
+            {
+                lines++;
+            }
+        }
+    
+        Assert.Equal(1, lines); // Only the header line
+    
+        A.CallTo(() => requestLogStore.QueryAllAsync(AppId.Id.ToString(), timeFrom, timeTo, CancellationToken.None))
+            .Returns(new[] { CreateRecord() }.ToAsyncEnumerable());
+    
+        stream = new MemoryStream();
+    
+        await sut.ReadLogAsync(AppId.Id, timeFrom, timeTo, stream, CancellationToken.None);
+        stream.Position = 0;
+    
+        lines = 0;
+        using (var reader = new StreamReader(stream))
+        {
+            while (await reader.ReadLineAsync() != null)
+            {
+                lines++;
+            }
+        }
+    
+        Assert.Equal(2, lines); // Header + one data line
+    }
+    
+    private static Request CreateRecord()
+    {
+        return new Request { Properties = [] };
+    }
+
+*/
+/*
+FAILED TEST: The test run failed due to **C# syntax errors** in the file `DefaultAppLogStoreTests.cs`, specifically:
+
+### Errors:
+1. **Missing semicolons (`;`)** at the end of statements (e.g., **Line 149**).
+2. **Invalid token `{`** in class member declarations (e.g., **Line 540**), indicating malformed or misplaced code blocks.
+3. **Incorrect syntax** in assignments or method declarations (e.g., **Line 541**).
+
+### Recommended Fixes:
+1. Add missing semicolons at the end of affected lines (e.g., **Line 149**).
+2. Correct the syntax at the indicated lines by:
+   - Ensuring valid method or class member declarations.
+   - Properly placing braces `{}` and using valid assignment syntax.
+   - Fixing malformed code blocks (e.g., **Lines 540–543**).
+
+    [Fact]
+    public async Task Should_not_add_null_or_empty_string_fields_to_request()
+    {
+        Request? recordedRequest = null;
+    
+        A.CallTo(() => requestLogStore.IsEnabled)
+            .Returns(true);
+    
+        A.CallTo(() => requestLogStore.LogAsync(A<Request>._, A<CancellationToken>._))
+            .Invokes(x => recordedRequest = x.GetArgument<Request>(0)!);
+    
+        var request = new RequestLog
+        {
+            UserClientId = null,
+            UserId = string.Empty,
+            RequestPath = null,
+            RequestMethod = null,
+            CacheServer = null,
+            CacheStatus = string.Empty,
+            Timestamp = default
+        };
+    
+        await sut.LogAsync(AppId.Id, request, CancellationToken.None);
+    
+        Assert.NotNull(recordedRequest);
+    
+        Assert.DoesNotContain(DefaultAppLogStore.FieldAuthClientId, recordedRequest.Properties);
+        Assert.DoesNotContain(DefaultAppLogStore.FieldAuthUserId, recordedRequest.Properties);
+        Assert.DoesNotContain(DefaultAppLogStore.FieldRequestPath, recordedRequest.Properties);
+        Assert.DoesNotContain(DefaultAppLogStore.FieldRequestMethod, recordedRequest.Properties);
+        Assert.DoesNotContain(DefaultAppLogStore.FieldCacheServer, recordedRequest.Properties);
+        Assert.DoesNotContain(DefaultAppLogStore.FieldCacheStatus, recordedRequest.Properties);
+    }
+
+*/
+/*
+FAILED TEST: The test run failed due to **C# syntax errors** in the test file `DefaultAppLogStoreTests.cs`, specifically:
+
+### Issues:
+1. **Missing semicolons (`;`)** at the end of statements (e.g., **Line 149**).
+2. **Invalid token `{`** in class member declarations (e.g., **Line 491**), indicating malformed or misplaced code blocks.
+3. **Incorrect placement of braces `{}` and assignment syntax** (e.g., **Lines 491–494**).
+
+### Recommended Fixes:
+1. Add missing semicolons at the end of affected lines (e.g., **Line 149**).
+2. Correct the syntax at the indicated lines by:
+   - Ensuring valid method or class member declarations.
+   - Properly placing braces `{}` and using valid assignment syntax.
+
+    [Fact]
+    public async Task Should_not_add_non_numeric_values_to_request()
+    {
+        Request? recordedRequest = null;
+    
+        A.CallTo(() => requestLogStore.IsEnabled)
+            .Returns(true);
+    
+        A.CallTo(() => requestLogStore.LogAsync(A<Request>._, A<CancellationToken>._))
+            .Invokes(x => recordedRequest = x.GetArgument<Request>(0)!);
+    
+        var request = new RequestLog
+        {
+            Bytes = "not a number",
+            CacheHits = "invalid",
+            CacheTTL = "abc",
+            Costs = "xyz",
+            ElapsedMs = "120.5",
+            StatusCode = "not a long",
+            Timestamp = default
+        };
+    
+        await sut.LogAsync(AppId.Id, request, CancellationToken.None);
+    
+        Assert.NotNull(recordedRequest);
+    
+        Assert.DoesNotContain(DefaultAppLogStore.FieldBytes, recordedRequest.Properties);
+        Assert.DoesNotContain(DefaultAppLogStore.FieldCacheHits, recordedRequest.Properties);
+        Assert.DoesNotContain(DefaultAppLogStore.FieldCacheTTL, recordedRequest.Properties);
+        Assert.DoesNotContain(DefaultAppLogStore.FieldCosts, recordedRequest.Properties);
+        Assert.DoesNotContain(DefaultAppLogStore.FieldRequestElapsedMs, recordedRequest.Properties);
+        Assert.DoesNotContain(DefaultAppLogStore.FieldStatusCode, recordedRequest.Properties);
+    }
+
+*/
+/*
+FAILED TEST: The test run failed due to **C# syntax errors** in the file `DefaultAppLogStoreTests.cs`, which prevent successful compilation. The main issues are:
+
+1. **Missing semicolons (`;`)** at the end of statements (e.g., **Line 151**).
+2. **Invalid token `{`** in class member declarations (e.g., **Line 446**), indicating malformed or misplaced code blocks.
+3. **Incorrect syntax** in assignments or method declarations (e.g., **Line 447**).
+
+### Recommended Fixes:
+1. Add missing semicolons at the end of affected lines (e.g., **Line 151**).
+2. Correct the placement of braces `{}` and ensure valid method or class member declarations (e.g., **Lines 446–449**).
+3. Ensure all method bodies are properly enclosed and syntactically valid.
+
+    [Fact]
+    public async Task Should_add_max_values_to_request()
+    {
+        Request? recordedRequest = null;
+    
+        A.CallTo(() => requestLogStore.IsEnabled)
+            .Returns(true);
+    
+        A.CallTo(() => requestLogStore.LogAsync(A<Request>._, A<CancellationToken>._))
+            .Invokes(x => recordedRequest = x.GetArgument<Request>(0)!);
+    
+        var request = new RequestLog
+        {
+            Bytes = long.MaxValue,
+            CacheHits = long.MaxValue,
+            CacheTTL = long.MaxValue,
+            Costs = double.MaxValue,
+            ElapsedMs = double.MaxValue,
+            StatusCode = int.MaxValue,
+            Timestamp = default
+        };
+    
+        await sut.LogAsync(AppId.Id, request, CancellationToken.None);
+    
+        Assert.NotNull(recordedRequest);
+    
+        Assert.Contains(DefaultAppLogStore.FieldBytes, recordedRequest.Properties);
+        Assert.Contains(DefaultAppLogStore.FieldCacheHits, recordedRequest.Properties);
+        Assert.Contains(DefaultAppLogStore.FieldCacheTTL, recordedRequest.Properties);
+        Assert.Contains(DefaultAppLogStore.FieldCosts, recordedRequest.Properties);
+        Assert.Contains(DefaultAppLogStore.FieldRequestElapsedMs, recordedRequest.Properties);
+        Assert.Contains(DefaultAppLogStore.FieldStatusCode, recordedRequest.Properties);
+    }
+
+*/
+/*
 FAILED TEST: The test run failed due to **C# syntax errors** in the file `DefaultAppLogStoreTests.cs`, preventing successful compilation:
 
 ### Errors:
